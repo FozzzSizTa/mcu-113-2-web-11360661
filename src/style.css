@@ -17,6 +17,8 @@ nav {
 ul {
   list-style: none;
   padding-left: 0;
+  display: flex;
+  justify-content: space-between;
 }
 ul > li {
   border: 1px solid #ccc;
@@ -31,6 +33,12 @@ a:hover,
 a:focus {
   color: black;
   text-decoration: none;
+}
+.card-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .card {
   border-style: solid;
