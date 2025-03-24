@@ -1,3 +1,5 @@
+import { Product } from "./product";
+
 let product = {
   id: 1,
   name: "圖像 Angular 開發入門 第二版",
