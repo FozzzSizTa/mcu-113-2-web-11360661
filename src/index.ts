@@ -9,3 +9,6 @@ console.log(isShow);
 
 let creatDate = new Date();
 console.log("Create Date", creatDate);
+
+let modifyDate: Date | undefined = undefined;
+console.log("Modify Date", modifyDate);
