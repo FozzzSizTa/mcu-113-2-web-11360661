@@ -1,14 +1,13 @@
-let productId = 1;
-console.log(productId);
+let product = {
+  id: 1,
+  name: "圖像 Angular 開發入門 第二版",
+  company: "博碩文化",
+  price: 500,
+  isShow: true,
+  createDate: new Date(2024, 3, 10),
+  modifyDate: undefined,
+};
 
-const productName = "圖像 Angular 開發入門 第二版";
-console.log(productName);
+console.log(product);
 
-let isShow = true;
-console.log(isShow);
-
-let creatDate = new Date();
-console.log("Create Date", creatDate);
-
-let modifyDate: Date | undefined = undefined;
-console.log("Modify Date", modifyDate);
+console.table(product);
