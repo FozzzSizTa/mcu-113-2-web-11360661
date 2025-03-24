@@ -7,7 +7,6 @@ let product = {
   price: 500,
   isShow: true,
   createDate: new Date(2024, 3, 10),
-  modifyDate: undefined,
 };
 
 console.log(product);
