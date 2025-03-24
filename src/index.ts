@@ -5,6 +5,12 @@ let products = [
   new Product(2, "金魚都能懂得 CSS 必學屬性", "博碩文化", 500, true, new Date(2024, 3, 10)),
 ];
 
-console.log(products);
+console.table(products);
+
+setProductDisplay(products[0], false);
 
 console.table(products);
+
+function setProductDisplay(product: Product, isShow: boolean) {
+  product.isShow = isShow;
+}
