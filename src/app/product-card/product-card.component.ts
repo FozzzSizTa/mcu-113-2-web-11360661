@@ -7,7 +7,12 @@ import { Component } from '@angular/core';
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
-  ProductName = '書籍 B';
+  ProductName = '書籍 A';
   author = '作者甲、作者乙、作者丙';
   company = '碩博文化';
+
+  isShow = true;
+  onSetDisplay(isShow: boolean): void {
+    this.isShow = isShow;
+  }
 }
