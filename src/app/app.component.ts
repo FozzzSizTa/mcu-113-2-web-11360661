@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { ProductCardComponent } from './product-card/product-card.component';
 
 @Component({
@@ -8,5 +8,18 @@ import { ProductCardComponent } from './product-card/product-card.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'shopping-cart';
+  @Input()
+  ProductName!: string;
+
+  @Input()
+  author!: string;
+
+  @Input()
+  company!: string;
+
+  @Input()
+  isShow!: boolean;
+
+  @Input()
+  photoUrl!: string;
 }
