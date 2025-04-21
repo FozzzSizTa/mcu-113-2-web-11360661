@@ -8,18 +8,11 @@ import { ProductCardComponent } from './product-card/product-card.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  @Input()
-  ProductName!: string;
+  ProductName = '書籍 A';
+  author = '作者甲、作者乙、作者丙';
+  company = '碩博文化';
 
-  @Input()
-  author!: string;
+  isShow = true;
 
-  @Input()
-  company!: string;
-
-  @Input()
-  isShow!: boolean;
-
-  @Input()
-  photoUrl!: string;
+  photoUrl = 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img';
 }
