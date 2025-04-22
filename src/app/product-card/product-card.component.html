@@ -4,7 +4,11 @@
   <span>{{createDate | date: 'yyyy-MM-dd'}}</span>
 </div>
 <div>
-  <div>{{ author }}</div>
+  @for (author of authors; track $index) {
+  <span>{{ author }}</span>
+  @if (!$last) {
+  <span>、</span>
+  }}
 </div>
 <div class="company">
   <span>{{ company }}</span>

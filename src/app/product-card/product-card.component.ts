@@ -15,7 +15,7 @@ export class ProductCardComponent {
   ProductName!: string;
 
   @Input()
-  author!: string;
+  authors!: string[];
 
   @Input()
   company!: string;
