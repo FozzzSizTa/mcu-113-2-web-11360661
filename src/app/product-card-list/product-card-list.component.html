@@ -1,7 +1,7 @@
-@for (product of products; track $index) {
+@for (product of products(); track $index) {
 <app-product-card
   [id]="product.id"
-  [ProductName]="product.name"
+  [productName]="product.name"
   [authors]="product.authors"
   [company]="product.company"
   [(isShow)]="product.isShow"
@@ -11,5 +11,5 @@
 ></app-product-card>
 } @empty {
 <div class="empty-data">無資料</div>
-} {{pageIndex}}
+}
 <app-pagination [totalCount]="products.length" [(pageIndex)]="pageIndex" pageSize="2"></app-pagination>
