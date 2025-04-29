@@ -1,7 +1,8 @@
 import { Product } from '../models/product';
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { outputAst } from '@angular/compiler';
 
 @Component({
   selector: 'app-product-card-list',
@@ -11,6 +12,6 @@ import { PaginationComponent } from '../pagination/pagination.component';
 })
 export class ProductCardListComponent {
   readonly products = input<Product[]>([]);
-
+  readonly view = output<Product>();
   pageIndex = 1;
 }
