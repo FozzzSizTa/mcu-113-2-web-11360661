@@ -16,6 +16,8 @@ export class ProductCardComponent {
   readonly photoUrl = input<string>();
   readonly createDate = input<Date>();
   readonly price = input<number, string | number>(0, { transform: numberAttribute });
+  readonly edit = output<void>();
+  readonly remove = output<void>();
   readonly view = output<void>();
   @HostBinding('class')
   class = 'app-product-card';

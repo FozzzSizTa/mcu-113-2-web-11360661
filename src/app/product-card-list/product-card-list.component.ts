@@ -13,5 +13,8 @@ import { outputAst } from '@angular/compiler';
 export class ProductCardListComponent {
   readonly products = input<Product[]>([]);
   readonly view = output<Product>();
+
+  readonly edit = output<Product>();
+  readonly remove = output<Product>();
   pageIndex = 1;
 }
