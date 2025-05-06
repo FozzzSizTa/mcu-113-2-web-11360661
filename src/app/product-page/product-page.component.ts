@@ -51,6 +51,11 @@ export class ProductPageComponent implements OnInit {
     this.getProducts();
   }
 
+  onRemove({ id }: Product): void {
+    this.ProductService.remove(id);
+    this.getProducts();
+  }
+
   private getProducts(): void {
     const { data, count } = this.ProductService.getList(undefined, this.pageIndex, this.pageSize);
     this.products = data;
