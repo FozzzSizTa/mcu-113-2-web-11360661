@@ -1,12 +1,13 @@
+import { Product } from './../models/product';
 import { ProductService } from './../services/product.service';
 import { Component, inject, OnInit } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
-import { Product } from '../models/product';
 import { Router } from '@angular/router';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-product-page',
-  imports: [ProductCardListComponent],
+  imports: [PaginationComponent, ProductCardListComponent],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
@@ -15,11 +16,13 @@ export class ProductPageComponent implements OnInit {
 
   private ProductService = inject(ProductService);
 
+  pageIndex = 1;
+  pageSize = 5;
+  totalCount = 0;
   products: Product[] = [];
 
   ngOnInit(): void {
-    this.ProductService = new ProductService();
-    this.products = this.ProductService.getList();
+    this.getProducts();
   }
 
   onEdit(product: Product) {
@@ -27,5 +30,30 @@ export class ProductPageComponent implements OnInit {
   }
   onView(product: Product) {
     this.router.navigate(['product', 'view', product.id]);
+  }
+  onPageIndexChange(pageIndex: number): void {
+    this.pageIndex = pageIndex;
+    this.getProducts();
+  }
+
+  onAdd(): void {
+    const product = new Product({
+      id: 10,
+      name: '書籍 J',
+      authors: ['作者甲', '作者乙', '作者丙'],
+      company: '碩博文化',
+      isShow: true,
+      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
+      createDate: new Date('2025/4/9'),
+      price: 10000,
+    });
+    this.ProductService.add(product);
+    this.getProducts();
+  }
+
+  private getProducts(): void {
+    const { data, count } = this.ProductService.getList(undefined, this.pageIndex, this.pageSize);
+    this.products = data;
+    this.totalCount = count;
   }
 }
