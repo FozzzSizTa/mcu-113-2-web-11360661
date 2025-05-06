@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class ProductPageComponent implements OnInit {
   private router = inject(Router);
 
-  private ProductService!: ProductService;
+  private ProductService = inject(ProductService);
 
   products: Product[] = [];
 
