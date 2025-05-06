@@ -1,5 +1,6 @@
+import { ProductService } from './../services/product.service';
 import { Product } from './../models/product';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input, numberAttribute, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 @Component({
@@ -8,23 +9,25 @@ import { Router } from '@angular/router';
   templateUrl: './product-detail-page.component.html',
   styleUrl: './product-detail-page.component.scss',
 })
-export class ProductDetailPageComponent {
-  product = new Product({
-    id: 10,
-    name: '書籍 J',
-    authors: ['作者甲', '作者乙', '作者丙'],
-    company: '碩博文化',
-    isShow: true,
-    photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-    createDate: new Date('2025/4/9'),
-    price: 10000,
-  });
+export class ProductDetailPageComponent implements OnInit {
+  id = input.required<number, string | number>({ transform: numberAttribute });
+  product!: Product;
 
   readonly router = inject(Router);
+
+  private ProductService = inject(ProductService);
+
+  ngOnInit(): void {
+    this.product = this.ProductService.getById(this.id());
+  }
   onEdit(): void {
     this.router.navigate(['product', 'from', this.product.id]);
   }
   onBack(): void {
+    this.router.navigate(['products']);
+  }
+  onRemove(): void {
+    this.ProductService.remove(this.product.id);
     this.router.navigate(['products']);
   }
 }

@@ -38,8 +38,8 @@ export class ProductPageComponent implements OnInit {
 
   onAdd(): void {
     const product = new Product({
-      id: 10,
-      name: '書籍 J',
+      id: 11,
+      name: '書籍 Z',
       authors: ['作者甲', '作者乙', '作者丙'],
       company: '碩博文化',
       isShow: true,

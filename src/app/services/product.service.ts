@@ -1,5 +1,5 @@
+import { Product } from './../models/product';
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
@@ -107,7 +107,9 @@ export class ProductService {
       price: 10000,
     }),
   ];
-
+  getById(ProductId: number): Product {
+    return this._data.find(({ id }) => id === ProductId)!;
+  }
   getList(name: string | undefined, index: number, size: number): { data: Product[]; count: number } {
     const starIndex = (index - 1) * size;
     const endIndex = starIndex + size;
@@ -116,7 +118,7 @@ export class ProductService {
   }
 
   add(product: Readonly<Product>): void {
-    const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id));
+    const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id)) + 1;
     this._data.push(new Product({ ...product, id }));
   }
 
