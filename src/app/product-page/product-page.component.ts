@@ -53,6 +53,7 @@ export class ProductPageComponent implements OnInit {
 
   onRemove({ id }: Product): void {
     this.ProductService.remove(id);
+    this.pageIndex = 1;
     this.getProducts();
   }
 
