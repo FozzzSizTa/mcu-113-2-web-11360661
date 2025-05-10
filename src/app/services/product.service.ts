@@ -1,4 +1,4 @@
-import { delay, Observable, of } from 'rxjs';
+import { delay, filter, merge, mergeMap, Observable, of } from 'rxjs';
 import { Product } from './../models/product';
 import { Injectable } from '@angular/core';
 
@@ -108,8 +108,11 @@ export class ProductService {
       price: 10000,
     }),
   ];
-  getById(ProductId: number): Product {
-    return this._data.find(({ id }) => id === ProductId)!;
+  getById(ProductId: number): Observable<Product> {
+    return of(this._data).pipe(
+      mergeMap((data) => data),
+      filter(({ id }) => id === ProductId)
+    );
   }
   getList(name: string | undefined, index: number, size: number): Observable<{ data: Product[]; count: number }> {
     const starIndex = (index - 1) * size;
