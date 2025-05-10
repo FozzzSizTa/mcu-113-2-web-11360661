@@ -1,3 +1,4 @@
+import { delay, Observable, of } from 'rxjs';
 import { Product } from './../models/product';
 import { Injectable } from '@angular/core';
 
@@ -110,11 +111,11 @@ export class ProductService {
   getById(ProductId: number): Product {
     return this._data.find(({ id }) => id === ProductId)!;
   }
-  getList(name: string | undefined, index: number, size: number): { data: Product[]; count: number } {
+  getList(name: string | undefined, index: number, size: number): Observable<{ data: Product[]; count: number }> {
     const starIndex = (index - 1) * size;
     const endIndex = starIndex + size;
     const data = name ? this._data.filter((item) => item.name === name) : [...this._data];
-    return { data: data.slice(starIndex, endIndex), count: this._data.length };
+    return of({ data: data.slice(starIndex, endIndex), count: this._data.length }).pipe(delay(1000));
   }
 
   add(product: Readonly<Product>): void {

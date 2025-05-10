@@ -58,8 +58,9 @@ export class ProductPageComponent implements OnInit {
   }
 
   private getProducts(): void {
-    const { data, count } = this.ProductService.getList(undefined, this.pageIndex, this.pageSize);
-    this.products = data;
-    this.totalCount = count;
+    this.ProductService.getList(undefined, this.pageIndex, this.pageSize).subscribe(({ data, count }) => {
+      this.products = data;
+      this.totalCount = count;
+    });
   }
 }
