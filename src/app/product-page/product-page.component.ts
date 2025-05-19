@@ -1,10 +1,11 @@
 import { Product } from './../models/product';
 import { ProductService } from './../services/product.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { ProductCardListComponent } from '../product-card-list/product-card-list.component';
 import { Router, provideRouter } from '@angular/router';
 import { PaginationComponent } from '../pagination/pagination.component';
-import { BehaviorSubject, combineLatest, merge, startWith, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, count, merge, startWith, Subject, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-product-page',
@@ -12,7 +13,7 @@ import { BehaviorSubject, combineLatest, merge, startWith, Subject, switchMap } 
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.scss',
 })
-export class ProductPageComponent implements OnInit {
+export class ProductPageComponent {
   private router = inject(Router);
 
   private ProductService = inject(ProductService);
@@ -26,9 +27,21 @@ export class ProductPageComponent implements OnInit {
   }
   private readonly refresh$ = new Subject<void>();
   pageSize = 5;
-  totalCount = 0;
-  products: Product[] = [];
+  private readonly data$ = combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))]).pipe(
+    switchMap(() => this.ProductService.getList(undefined, this.pageIndex, this.pageSize))
+  );
+  private readonly data = toSignal(this.data$, { initialValue: { data: [], count: 0 } });
 
+  readonly totalCount = computed(() => {
+    const { count } = this.data();
+    return count;
+  });
+  readonly products = computed(() => {
+    const { data } = this.data();
+    return data;
+  });
+
+  /*
   ngOnInit(): void {
     combineLatest([this.pageIndex$, this.refresh$.pipe(startWith(undefined))])
       .pipe(switchMap(() => this.ProductService.getList(undefined, this.pageIndex, this.pageSize)))
@@ -37,7 +50,7 @@ export class ProductPageComponent implements OnInit {
         this.totalCount = count;
       });
   }
-
+  */
   onEdit(product: Product) {
     this.router.navigate(['product', 'from', product.id]);
   }
