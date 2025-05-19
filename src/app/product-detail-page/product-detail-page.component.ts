@@ -9,25 +9,21 @@ import { Router } from '@angular/router';
   templateUrl: './product-detail-page.component.html',
   styleUrl: './product-detail-page.component.scss',
 })
-export class ProductDetailPageComponent implements OnInit {
-  id = input.required<number, string | number>({ transform: numberAttribute });
-  product!: Product;
+export class ProductDetailPageComponent {
+  readonly product = input.required<Product>();
 
   readonly router = inject(Router);
 
   private ProductService = inject(ProductService);
 
-  ngOnInit(): void {
-    this.ProductService.getById(this.id()).subscribe((product) => (this.product = product));
-  }
   onEdit(): void {
-    this.router.navigate(['product', 'from', this.product.id]);
+    this.router.navigate(['product', 'from', this.product().id]);
   }
   onBack(): void {
     this.router.navigate(['products']);
   }
   onRemove(): void {
-    this.ProductService.remove(this.product.id);
+    this.ProductService.remove(this.product().id);
     this.router.navigate(['products']);
   }
 }
