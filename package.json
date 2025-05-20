@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "db-start": "json-server --watch ./public/assets/db.json"
   },
   "private": true,
   "dependencies": {
@@ -33,5 +34,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+  },
+  "optionalDependencies": {
+    "json-server": "^1.0.0-beta.3"
   }
 }
