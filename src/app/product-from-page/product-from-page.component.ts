@@ -3,7 +3,7 @@ import { ActivatedRoute, Data, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { Product } from '../models/product';
 import { ProductService } from '../services/product.service';
@@ -24,7 +24,7 @@ export class ProductFromPageComponent implements OnInit {
 
   // Reactive Form
   form = new FormGroup({
-    id: new FormControl<string | null>(null),
+    id: new FormControl<number | null>(null),
     name: new FormControl<string | null>(null, { validators: [Validators.required] }),
     authors: new FormArray<FormControl<string | null>>([]),
     company: new FormControl<string | null>(null, { validators: [Validators.required] }),
@@ -33,8 +33,9 @@ export class ProductFromPageComponent implements OnInit {
   });
 
   product!: Product;
-
-  // Getters for easier access
+  get id() {
+    return this.form.get('id') as FormControl<number | null>;
+  }
   get name() {
     return this.form.get('name') as FormControl<string | null>;
   }
@@ -57,15 +58,18 @@ export class ProductFromPageComponent implements OnInit {
 
   // Load resolved product data if needed
   ngOnInit(): void {
-    this.route.data.pipe(map(({ product }: Data) => product)).subscribe((product) => {
-      this.product = product;
-    });
+    this.route.data
+      .pipe(map(({ product }: Data) => product))
+      .pipe(tap(({ authors }) => this.onAddAuthor(authors.length)))
+      .subscribe((product) => this.form.patchValue(product));
   }
 
   // Add new author input
-  onAddAuthor(): void {
-    const control = new FormControl<string | null>(null, { validators: [Validators.required] });
-    this.authors.push(control);
+  onAddAuthor(length = 1): void {
+    for (let i = 1; i <= length; i++) {
+      const control = new FormControl<string | null>(null, { validators: [Validators.required] });
+      this.authors.push(control);
+    }
   }
 
   // Cancel and return to product list
@@ -79,9 +83,8 @@ export class ProductFromPageComponent implements OnInit {
       const products = dbData.products as Product[];
       const maxId = products.reduce((max, p) => Math.max(max, +p.id), 0);
       const newId = maxId + 1;
-
       const formData = new Product({
-        id: newId,
+        id: this.id.value ? +this.id.value : newId,
         name: this.name.value!,
         authors: this.authors.value.map((author) => author!),
         company: this.company.value!,
@@ -90,8 +93,8 @@ export class ProductFromPageComponent implements OnInit {
         createDate: new Date(),
         price: +(this.price.value || '0'),
       });
-
-      this.productService.add(formData).subscribe(() => {
+      const action$ = this.id.value ? this.productService.update(formData) : this.productService.add(formData);
+      action$.subscribe(() => {
         this.router.navigate(['products']);
       });
     });

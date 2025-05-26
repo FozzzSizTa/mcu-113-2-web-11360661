@@ -17,16 +17,16 @@
     {
       "id": "2",
       "name": "書籍 B",
+      "company": "博碩文化",
       "authors": [
         "作者甲",
         "作者乙",
         "作者丙"
       ],
-      "company": "博碩文化",
+      "price": 1000,
       "isShow": true,
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
-      "createDate": "2023-10-17T00:00:00.000+08:00",
-      "price": 10000
+      "createDate": "2025-05-26T07:37:42.225Z"
     },
     {
       "id": "3",
@@ -97,6 +97,30 @@
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
       "createDate": "2023-10-17T00:00:00.000+08:00",
       "price": 10000
+    },
+    {
+      "id": "8",
+      "name": "吃ㄐㄐ",
+      "company": "我家",
+      "authors": [
+        "我啊罵"
+      ],
+      "price": 200,
+      "isShow": true,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "createDate": "2025-05-26T07:38:01.318Z"
+    },
+    {
+      "id": 9,
+      "name": "123",
+      "company": "123",
+      "authors": [
+        "123"
+      ],
+      "price": 123,
+      "isShow": true,
+      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
+      "createDate": "2025-05-26T07:42:38.762Z"
     }
   ]
 }
