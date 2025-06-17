@@ -79,24 +79,22 @@ export class ProductFromPageComponent implements OnInit {
 
   // Save new product, generate ID from local static db.json
   onSave(): void {
-    this.http.get<any>('/assets/db.json').subscribe((dbData) => {
-      const products = dbData.products as Product[];
-      const maxId = products.reduce((max, p) => Math.max(max, +p.id), 0);
-      const newId = maxId + 1;
-      const formData = new Product({
-        id: this.id.value ? +this.id.value : newId,
-        name: this.name.value!,
-        authors: this.authors.value.map((author) => author!),
-        company: this.company.value!,
-        isShow: this.isShow.value,
-        photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-        createDate: new Date(),
-        price: +(this.price.value || '0'),
-      });
-      const action$ = this.id.value ? this.productService.update(formData) : this.productService.add(formData);
-      action$.subscribe(() => {
-        this.router.navigate(['products']);
-      });
+    const isEdit = !!this.id.value;
+    const formData: any = {
+      name: this.name.value!,
+      authors: this.authors.value.map((author) => author!),
+      company: this.company.value!,
+      isShow: this.isShow.value,
+      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
+      createDate: new Date(),
+      price: +(this.price.value || '0'),
+    };
+    if (isEdit) {
+      formData.id = this.id.value;
+    }
+    const action$ = isEdit ? this.productService.update(formData) : this.productService.add(formData);
+    action$.subscribe(() => {
+      this.router.navigate(['products']);
     });
   }
 }

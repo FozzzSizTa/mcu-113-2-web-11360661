@@ -99,28 +99,14 @@
       "price": 10000
     },
     {
-      "id": "8",
-      "name": "吃ㄐㄐ",
-      "company": "我家",
-      "authors": [
-        "我啊罵"
-      ],
-      "price": 200,
+      "id": "d18e",
+      "name": "我贏了",
+      "authors": [],
+      "company": "修 bug 好累合作社",
       "isShow": true,
       "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
-      "createDate": "2025-05-26T07:38:01.318Z"
-    },
-    {
-      "id": 9,
-      "name": "123",
-      "company": "123",
-      "authors": [
-        "123"
-      ],
-      "price": 123,
-      "isShow": true,
-      "photoUrl": "https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img",
-      "createDate": "2025-05-26T07:42:38.762Z"
+      "createDate": "2025-06-17T15:53:53.078Z",
+      "price": 5487
     }
   ]
 }

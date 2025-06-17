@@ -1,150 +1,42 @@
-import { delay, filter, map, merge, mergeMap, Observable, of, toArray } from 'rxjs';
+import { delay, map, Observable } from 'rxjs';
 import { Product } from './../models/product';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private _data: Product[] = [
-    new Product({
-      id: 1,
-      name: '書籍 A',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 2,
-      name: '書籍 B',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 3,
-      name: '書籍 C',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 4,
-      name: '書籍 D',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 5,
-      name: '書籍 E',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 6,
-      name: '書籍 F',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 7,
-      name: '書籍 G',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 8,
-      name: '書籍 H',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 9,
-      name: '書籍 I',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-    new Product({
-      id: 10,
-      name: '書籍 J',
-      authors: ['作者甲', '作者乙', '作者丙'],
-      company: '碩博文化',
-      isShow: true,
-      photoUrl: 'https://api.fnkr.net/testimg/200x200/DDDDDD/999999/?text=img',
-      createDate: new Date('2025/4/9'),
-      price: 10000,
-    }),
-  ];
-  getById(ProductId: number): Observable<Product> {
-    return of(this._data).pipe(
-      mergeMap((data) => data),
-      filter(({ id }) => id === ProductId)
-    );
+  private apiUrl = '/api/products'; // 根據 proxy 設定調整
+  constructor(private http: HttpClient) {}
+
+  getById(id: string | number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
+
   getList(name: string | undefined, index: number, size: number): Observable<{ data: Product[]; count: number }> {
-    return of(this._data).pipe(
-      mergeMap((data) => data),
-      filter((item) => (name ? item.name === name : true)),
-      toArray(),
-      map((data) => {
-        const startIndex = (index - 1) * size;
-        const endIndex = startIndex + size;
-        return {
-          data: data.slice(startIndex, endIndex),
-          count: data.length,
-        };
-      }),
-      delay(500)
+    // 依 json-server 支援的查詢參數調整
+    let params: any = { _page: index, _limit: size };
+    if (name) params.name = name;
+    return this.http.get<Product[]>(this.apiUrl, { params, observe: 'response' }).pipe(
+      delay(500),
+      // 取得總數與分頁資料
+      map((resp) => ({
+        data: resp.body || [],
+        count: +(resp.headers.get('X-Total-Count') || '0'),
+      }))
     );
   }
 
-  add(product: Readonly<Product>): Observable<Product> {
-    const id = this._data.length === 0 ? 1 : Math.max(...this._data.map(({ id }) => id)) + 1;
-    const newProduct = new Product({ ...product, id });
-    this._data.push(newProduct);
-    return of(newProduct);
+  add(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.apiUrl, product);
   }
 
-  update(product: Readonly<Product>): Observable<Product> {
-    throw new Error('Not implemented');
+  update(product: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.apiUrl}/${product.id}`, product);
   }
 
-  remove(productId: number): Observable<Product> {
-    const index = this._data.findIndex(({ id }) => id === productId);
-    const [product] = this._data.splice(index, 1);
-    return of(product);
+  remove(id: string | number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

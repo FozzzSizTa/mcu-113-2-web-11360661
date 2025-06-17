@@ -5,7 +5,7 @@ export class Product {
     }
   }
 
-  id!: number;
+  id!: string | number;
 
   name!: string;
 
